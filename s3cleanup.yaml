@@ -60,7 +60,7 @@ Resources:
     Properties:
       Description: >-
         This lambda function is used to clean up s3 bucket created in this cloudformation.  It will delete all objects and then delete the bucket.
-      Handler:  's3cleanup.lambda_handler'
+      Handler:  's3cleanup.handler'
       Role: !GetAtt LambdaRoleS3Cleanup.Arn
       Code:
         S3Bucket: !FindInMap ["SourceCode", "General", "S3Bucket"]
