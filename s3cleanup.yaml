@@ -11,12 +11,10 @@ Resources:
     Type: AWS::S3::Bucket
 
   cleanupBucketOnDelete:
-    DependsOn:  LambdaS3CleanupFunction
     Type: Custom::cleanupbucket
     Properties:
       ServiceToken: !GetAtt LambdaS3CleanupFunction.Arn
       BucketName: !Ref AppAccessLogBucket
-    DependsOn: AppAccessLogBucket
 
   LambdaRoleS3Cleanup:
       Type: 'AWS::IAM::Role'

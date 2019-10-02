@@ -22,8 +22,7 @@ from __future__ import print_function
 import json
 import logging
 import threading
-
-from botocore.vendored import requests
+import requests
 
 
 def log_config(event, loglevel=None, botolevel=None):

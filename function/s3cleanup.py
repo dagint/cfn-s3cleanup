@@ -38,7 +38,8 @@ def create(event, context):
 
     To return a failure to CloudFormation simply raise an exception, the exception message will be sent to CloudFormation Events.
     """
-    
+    print("event: {}".format(event))
+
     physical_resource_id = event['ResourceProperties']['BucketName']
     response_data = {}
     return physical_resource_id, response_data
@@ -50,20 +51,24 @@ def update(event, context):
 
     To return a failure to CloudFormation simply raise an exception, the exception message will be sent to CloudFormation Events.
     """
+    print("event: {}".format(event))
     physical_resource_id = event['ResourceProperties']['BucketName']
     response_data = {}
     return physical_resource_id, response_data
 
 
 def delete(event, context):
+    """
     global logger
     logger = crhelper.log_config(event)
+    """
+    
+    print("event: {}".format(event))
 
     bucket = event['ResourceProperties']['BucketName']
-    empty_delete_buckets(bucket)
+    response_data = empty_delete_buckets(bucket)
 
     physical_resource_id = event['PhysicalResourceId']
-    response_data = {}
     return physical_resource_id, response_data
 
 def handler(event, context):
@@ -71,6 +76,7 @@ def handler(event, context):
     Main handler function, passes off it's work to crhelper's cfn_handler
     """
     # update the logger with event info
+    print("event: {}".format(event))
     global logger
     logger = crhelper.log_config(event)
     return crhelper.cfn_handler(event, context, create, update, delete, logger,
