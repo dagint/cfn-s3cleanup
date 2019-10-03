@@ -1,5 +1,6 @@
 # cfn-s3cleanup
 
+# *** WARNING THIS WILL DELETE ALL OBJECTS IN THE BUCKET CREATED IN THIS CLOUDFORMATION.  IF YOU NEED THIS DATA FOR ANY REASON YOU SHOULD COPY IT OUT BEFORE EXECUTING A STACK DELETE ***
 
 ## Description
 A cloudformation template which includes a custom resource that calls a lambda to delete all objects in the bucket when a the cloudformation stack deletes.  It has support for s3 bucket versioning if it's enabled.  All the code needed is stored in the function/s3cleanup.zip + the cloudformation template s3cleanup.yaml.  This lambda, s3cleanup, code uses the AWS [crhelper](https://github.com/awslabs/aws-cloudformation-templates/tree/master/community/custom_resources/python_custom_resource_helper) code.  It also includes the requests module and all of it's requirements.  Everything in the function directory is included in the zip file.
