@@ -58,17 +58,16 @@ def update(event, context):
 
 
 def delete(event, context):
-    """
     global logger
     logger = crhelper.log_config(event)
-    """
-    
+
     print("event: {}".format(event))
 
     bucket = event['ResourceProperties']['BucketName']
-    response_data = empty_delete_buckets(bucket)
+    empty_delete_buckets(event, bucket)
 
     physical_resource_id = event['PhysicalResourceId']
+    response_data = {}
     return physical_resource_id, response_data
 
 def handler(event, context):
@@ -79,14 +78,14 @@ def handler(event, context):
     print("event: {}".format(event))
     global logger
     logger = crhelper.log_config(event)
-    return crhelper.cfn_handler(event, context, create, update, delete, logger,
-                                init_failed)
+    return crhelper.cfn_handler(event, context, create, update, delete, logger, init_failed)
 
-def empty_delete_buckets(bucket_name):
+def empty_delete_buckets(event, bucket_name):
     global logger
     logger = crhelper.log_config(event)
     logger.info("trying to delete the bucket {0}".format(bucket_name))
     # s3_client = SESSION.client('s3', region_name=region)
+    print("bucketname: {}".format(bucket_name))
     s3_client = boto3.client('s3')
     # s3 = SESSION.resource('s3', region_name=region)
     s3 = boto3.resource('s3')
@@ -97,8 +96,14 @@ def empty_delete_buckets(bucket_name):
         logger.error("bucket {0} does not exist".format(bucket_name))
         return
     # Check if versioning is enabled
+    #try:
     response = s3_client.get_bucket_versioning(Bucket=bucket_name)
+    #except Exception as e:
+    #    logger.error(e, exc_info=True)
+    #    logger.error("Error getting versioning info".format(bucket_name))
+    #    return
     status = response.get('Status','')
+    print("s3 version status: {}".format(status))
     if status == 'Enabled':
          response = s3_client.put_bucket_versioning(Bucket=bucket_name,
                                                     VersioningConfiguration={'Status': 'Suspended'})
