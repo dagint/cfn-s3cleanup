@@ -39,9 +39,10 @@ Resources:
                     - 's3:*'
                   Resource:
                     - !Sub 'arn:aws:s3:::${AppAccessLogBucket}'
+                    - !Sub 'arn:aws:s3:::${AppAccessLogBucket}/*'
                 - Effect: Deny
                   Action:
-                    - s3:DeleteBucket
+                    - 's3:DeleteBucket'
                   Resource: '*'
           - PolicyName: LogsAccess
             PolicyDocument:
